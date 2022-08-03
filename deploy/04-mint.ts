@@ -26,11 +26,11 @@ const mint: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const randomIpfsNftMintTxReceipt = await randomIpfsNftMintTx.wait(1)
     // Need to listen for response
     await new Promise<void>(async (resolve) => {
-        setTimeout(resolve, 300000) // 5 minute timeout time
+        setTimeout(resolve, 300000) // timeout after 5 minutes, if no response received from the contract then we will fail 
         // setup listener for our event
         randomIpfsNft.once("NftMinted", async () => {
             resolve()
-        })
+        })  
         if (chainId == 31337) {
             const requestId = randomIpfsNftMintTxReceipt.events[1].args.requestId.toString()
             const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer)
