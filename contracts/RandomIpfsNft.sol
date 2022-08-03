@@ -161,7 +161,7 @@ contract RandomIpfsNft is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
     }
 
     function seeBreed(uint256 i) public pure returns (Breed) {
-        return Breed(i);
+        return Breed(i); // 0, 1, 2
     }
 
     function seeDogTokenUris(uint256 i) public view returns (string memory) {
