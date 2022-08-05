@@ -25,8 +25,8 @@ const mint: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const randomIpfsNftMintTx = await randomIpfsNft.requestNft({ value: mintFee.toString() })
     const randomIpfsNftMintTxReceipt = await randomIpfsNftMintTx.wait(1)
     // Need to listen for response
-    await new Promise<void>(async (resolve) => {
-        setTimeout(resolve, 300000) // timeout after 5 minutes, if no response received from the contract then we will fail 
+    await new Promise<void>(async (resolve, reject) => {
+        setTimeout(() => reject("Timeout: 'NFTMinted' event did not fire"), 300000) // timeout after 5 minutes, if no response received from the contract then we will fail 
         // setup listener for our event
         randomIpfsNft.once("NftMinted", async () => {
             resolve()
