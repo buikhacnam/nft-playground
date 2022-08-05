@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "hardhat/console.sol";
 
+// https://rinkeby.etherscan.io/address/0x94a85f43E2D100D1961eaEE57713868545546eAd
 contract DynamicSvgNft is ERC721 {
     uint256 private s_tokenCounter;
     string private s_lowImageURI;
@@ -40,10 +41,10 @@ contract DynamicSvgNft is ERC721 {
     {
         // example:
         // '<svg width="500" height="500" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="black" d="M150,0,L75,200,L225,200,Z"></path></svg>'
-        // would return ""
+        // would return "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm9..."
         string memory baseURL = "data:image/svg+xml;base64,";
         string memory svgBase64Encoded = Base64.encode(
-            bytes(string(abi.encodePacked(svg)))
+            bytes(abi.encodePacked(svg))
         );
         return string(abi.encodePacked(baseURL, svgBase64Encoded));
     }
@@ -54,12 +55,12 @@ contract DynamicSvgNft is ERC721 {
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         require(_exists(tokenId), "URI Query for noneexistent token");
-        (, int256 price, , , ) = i_priceFeed.latestRoundData();
+        (, int256 price, , , ) = i_priceFeed.latestRoundData(); // ex: 166124000000 = 1661 USD
         string memory imageURI = s_lowImageURI;
         if (price > s_tokenIdToHighValues[tokenId]) {
             imageURI = s_highImageURI;
         }
-        return // data:application/json;base64,aqey92839yr94ry9y9ey38ey93ey938ry49y
+        return // data:application/json;base64,PHN2ZyB2aWV3Qm9...
             string(
                 abi.encodePacked(
                     _baseURI(),
@@ -93,5 +94,14 @@ contract DynamicSvgNft is ERC721 {
 
     function getTokenCounter() public view returns (uint256) {
         return s_tokenCounter;
+    }
+
+    function getLatestPrice() public view returns (int256) {
+        (, int256 price, , , ) = i_priceFeed.latestRoundData();
+        return price;
+    }
+
+    function getTokenIdToHighValue(uint256 tokenId) public view returns (int256) {
+        return s_tokenIdToHighValues[tokenId];
     }
 }

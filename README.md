@@ -48,9 +48,9 @@ Please check the file `utils/uploadToPinata.ts` and `utils/uploadToNftStorage.ts
 
 ## Dynamic NFT
 
-Contract Address: https://rinkeby.etherscan.io/address/0x2aBb9E5d9648dc64bf37aB5F5Ed11aCa20679C7E#code
+Contract Address: https://rinkeby.etherscan.io/address/0x94a85f43E2D100D1961eaEE57713868545546eAd
 
-View it on Opensea: https://testnets.opensea.io/collection/dynamic-svg-nft-b165m1a9hv
+View it on Opensea: https://testnets.opensea.io/collection/dynamic-svg-nft-6qt9k1ogye   
 
 This nft will be stored on chain with dynamic image based on value sent when minting.
 
